@@ -1,8 +1,10 @@
 import React from 'react'
-
+import Sellerinfo from './sellerinfo'
 function Login() {
   return (
-    <div>Login</div>
+    <div>Login
+    <Sellerinfo/>
+    </div>
   )
 }
 
