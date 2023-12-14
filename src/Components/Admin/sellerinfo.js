@@ -1,319 +1,243 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import './style.css';
-import { Button, Stack } from '@mui/material';
-import Add from '@mui/icons-material/Add';
-import Export from '@mui/icons-material/FileDownload';
-import Import from '@mui/icons-material/ImportExport';
-import { FaFilter } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { Button, TextField, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import './Style.css';
 
-function Sellerinfo() {
-  const [SellerinfoData, setSellerinfoData] = useState([]);
-  const [filteredSellerinfoData, setFilteredSellerinfoData] = useState([]);
-  const [country, setCountry] = useState('');
-  const [location, setLocation] = useState('');
-  const [portcode, setPortcode] = useState('');
-  const [editMode, setEditMode] = useState(false);
-  const [editingPortcode, setEditingPortcode] = useState(null);
-  const [countryFilter, setCountryFilter] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
-  const itemsPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(1);
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  const fetchData = useCallback(() => {
-    fetch('http://localhost:5000/api/Sellerinfo')
-      .then((response) => response.json())
-      .then((data) => {
-        setSellerinfoData(data.SellerinfoData);
-        setFilteredSellerinfoData(data.SellerinfoData); // Initially set filtered data to all data
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
-  const applyFilters = useCallback(() => {
-    const filteredData = SellerinfoData.filter((record) => {
-      return (
-        record.country.toLowerCase().includes(countryFilter.toLowerCase()) &&
-        record.location.toLowerCase().includes(locationFilter.toLowerCase())
-      );
-    });
-    setFilteredSellerinfoData(filteredData);
-  }, [countryFilter, locationFilter, SellerinfoData]);
+const Sellerinfo = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState({});
+  const [data, setData] = useState([]);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newItem, setNewItem] = useState({
+    Sno: '',
+    Org: '',
+    TotV: '',
+    Rate: '',
+    Start: '',
+    End: '',
+    Status: '',
+  });
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
- 
-  const handleCreateClick = () => {
-    setEditMode(true);
-    setEditingPortcode(null);
+  const fetchData = () => {
+    fetch('http://localhost:5000/api/sellerinfo')
+      .then(response => response.json())
+      .then(data => {
+        const formattedData = data.sellerinfoData.map(item => ({
+          ...item,
+          Start: new Date(item.Start).toLocaleDateString(),
+          End: new Date(item.End).toLocaleDateString(),
+        }));
+        setData(formattedData);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   };
 
-  const handleExportClick = () => {
-    const convertToCSV = (data) => {
-      const header = Object.keys(data[0]).join(',') + '\n';
-      const csv = data.map((row) => Object.values(row).join(',')).join('\n');
-      return header + csv;
-    };
-
-    const csvData = convertToCSV(SellerinfoData);
-
-    const blob = new Blob([csvData], { type: 'text/csv' });
-
-    const downloadLink = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = downloadLink;
-    a.download = 'SellerinfoData.csv';
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
-  };
-
-  const handleImportClick = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
-    input.onchange = (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target.result;
-        processCSVData(result);
-      };
-      reader.readAsText(file);
-    };
-    input.click();
-  };
-  
-  const processCSVData = (csvData) => {
-    const lines = csvData.split('\n');
-    const importedData = lines.map((line) => line.split(','));
-    importedData.forEach((record) => {
-      const [country, location, portcode] = record;
-      const newRecord = { country, location, portcode };
-  
-      fetch('http://localhost:5000/api/Sellerinfo', {
+  const handleSubmitAdd = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/sellerinfo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newRecord),
-      })
-        .then(() => {
-          fetchData();
-        })
-        .catch((error) => {
-          console.error('Error adding data:', error);
+        body: JSON.stringify(newItem),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.error('Error adding new item:', data);
+      } else {
+        console.log('Item added successfully');
+        fetchData();
+        setIsAdding(false);
+        setNewItem({
+          Sno: '',
+          Org: '',
+          TotV: '',
+          Rate: '',
+          Start: '',
+          End: '',
+          Status: '',
         });
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  };
+
+  const handleDelete = async (item) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/sellerinfo/${item.Org}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.error('Error deleting item:', data);
+      } else {
+        console.log('Item deleted successfully');
+        fetchData();
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  };
+
+  const handleAdd = () => {
+    setIsAdding(true);
+  };
+
+  const handleCancelAdd = () => {
+    setIsAdding(false);
+    setNewItem({
+      Sno: '',
+      Org: '',
+      TotV: '',
+      Rate: '',
+      Start: '',
+      End: '',
+      Status: '',
     });
   };
-  
-  const handleEditClick = (portcode) => {
-    setEditMode(true);
-    setEditingPortcode(portcode);
-    const recordToEdit = SellerinfoData.find((record) => record.portcode === portcode);
-    setCountry(recordToEdit.country);
-    setLocation(recordToEdit.location);
-    setPortcode(recordToEdit.portcode);
-  };
 
-  const handleDeleteClick = (portcode) => {
-    // Delete from the database
-    fetch(`http://localhost:5000/api/Sellerinfo/${portcode}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        const updatedSellerinfoData = SellerinfoData.filter((record) => record.portcode !== portcode);
-        setSellerinfoData(updatedSellerinfoData);
-        setFilteredSellerinfoData(updatedSellerinfoData);
-      })
-      .catch((error) => {
-        console.error('Error deleting data:', error);
-      });
+  const handleEdit = (item) => {
+    setIsEditing(true);
+    setEditedItem(item);
   };
-  
-  
 
   const handleCancelEdit = () => {
-    setEditMode(false);
-    setEditingPortcode(null);
-    setCountry('');
-    setLocation('');
-    setPortcode('');
+    setIsEditing(false);
+    setEditedItem({});
   };
 
-  const handleSaveEdit = () => {
-    const updatedRecord = { country, location, portcode };
-  
-    if (editingPortcode) {
-      fetch(`http://localhost:5000/api/Sellerinfo/${editingPortcode}`, {
+  const handleSubmitEdit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/sellerinfo/${editedItem.Org}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedRecord),
-      })
-        .then(() => {
-          const updatedSellerinfoData = SellerinfoData.map((record) =>
-            record.portcode === editingPortcode ? updatedRecord : record
-          );
-          setSellerinfoData(updatedSellerinfoData);
-          setFilteredSellerinfoData(updatedSellerinfoData);
-          handleCancelEdit();
-        })
-        .catch((error) => {
-          console.error('Error updating data:', error);
-        });
-    } else {
-      fetch('http://localhost:5000/api/Sellerinfo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedRecord),
-      })
-        .then(() => {
-          fetchData(); // Fetch all data again
-          handleCancelEdit();
-        })
-        .catch((error) => {
-          console.error('Error adding data:', error);
-        });
+        body: JSON.stringify(editedItem),
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        console.error('Error updating item:', data);
+      } else {
+        console.log('Item updated successfully');
+        fetchData();
+        setIsEditing(false);
+        setEditedItem({});
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
     }
   };
   
+  const handleInputChangeEdit = (e, fieldName) => {
+    const { value } = e.target;
+    const formattedValue = (fieldName === 'Start' || fieldName === 'End')
+      ? value.split('/').reverse().join('-') // Assuming the date is in 'MM/DD/YYYY' format
+      : value;
+  
+    setEditedItem(prevItem => ({
+      ...prevItem,
+      [fieldName]: formattedValue,
+    }));
+  };
   
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewItem(prevItem => ({
+      ...prevItem,
+      [name]: value,
+    }));
+  };
+ 
   return (
-    <>
-    <div className="slider">
-      <div className={`slide ${editMode ? 'slide-out' : 'slide-in'}`}>
-        <div className='rowx'>
-          <div className='colxa'>
-            <h1>Port Pair</h1>
-          </div>
-          <div className='colxb'>
-            <Stack spacing={3} direction="row">
-              <Button variant="contained" onClick={handleExportClick} startIcon={<Export />}>
-                Export
-              </Button>
-              <Button variant="contained" onClick={handleImportClick} startIcon={<Import />}>
-                Import
-              </Button>
-              <Button variant="contained" onClick={handleCreateClick} startIcon={<Add />}>
-                ADD
-              </Button>
-            </Stack>
-          </div>
+    <div className="admin-container">
+      <h2>Admin</h2>
+      <Button variant="contained" color="primary" onClick={handleAdd}>Add</Button>
+      {isAdding && (
+        <div>
+          <h3>Add New Item</h3>
+          <form>
+            <TextField label="Sno" className='tff' autoComplete="off" type="text" name="Sno" value={newItem.Sno} onChange={handleInputChange} />
+            <TextField label="Org" className='tff' autoComplete="off" type="text" name="Org" value={newItem.Org} onChange={handleInputChange} />
+            <TextField label="TotV" className='tff' autoComplete="off" type="text" name="TotV" value={newItem.TotV} onChange={handleInputChange} />
+            <TextField label="Rate" className='tff' autoComplete="off" type="text" name="Rate" value={newItem.Rate} onChange={handleInputChange} />
+            <TextField label="Start" className='tff' autoComplete="off" type="date" name="Start" value={newItem.Start} onChange={handleInputChange} />
+            <TextField label="End" className='tff' autoComplete="off" type="date" name="End" value={newItem.End} onChange={handleInputChange} />
+            <TextField label="Status" className='tff' autoComplete="off" type="text" name="Status" value={newItem.Status} onChange={handleInputChange} />
+            <div className="button-container">
+              <Button variant="contained" color="success" onClick={handleSubmitAdd}>Submit</Button>
+              <Button variant="contained" color="error" onClick={handleCancelAdd}>Cancel</Button>
+            </div>
+          </form>
         </div>
-        <br />
-        <input
-          type="text"
-          className="inp"
-          placeholder="Country Filter"
-          value={countryFilter}
-          onChange={(e) => setCountryFilter(e.target.value)}
-        />
-        <input
-          type="text"
-          className="inp"
-          placeholder="Location Filter"
-          value={locationFilter}
-          onChange={(e) => setLocationFilter(e.target.value)}
-        />
-        <Button variant="contained" className="filter-button" onClick={applyFilters}>
-          SUBMIT
-        </Button>
-        <table className="custom-table">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Country&nbsp;<FaFilter /></th>
-              <th>Location&nbsp;<FaFilter /></th>
-              <th>Port Code</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-          {filteredSellerinfoData.slice(indexOfFirstItem, indexOfLastItem).map((record, index) => (
-              <tr key={record.portcode}>
-                <td>{index + 1}</td>
-                <td>{record.country}</td>
-                <td>{record.location}</td>
-                <td>{record.portcode}</td>
-                <td>
-                  <Button variant="outlined" onClick={() => handleEditClick(record.portcode)}>
-                    Edit
-                  </Button>&nbsp;&nbsp;&nbsp;
-                  <Button variant="outlined" onClick={() => handleDeleteClick(record.portcode)}>
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {editMode && (
-        <div className={`slide second-slide slide-in`}>
-          <h1>Port Pair</h1>
-          <input
-            type="text"
-            className="inp"
-            placeholder="Country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          />
-          <input
-            type="text"
-            className="inp"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
-          <input
-            type="text"
-            className="inp"
-            placeholder="Port Code"
-            value={portcode}
-            onChange={(e) => setPortcode(e.target.value)}
-          />
-          <Stack spacing={3} direction="row">
-            <Button variant="contained" className="add-record-button" onClick={handleSaveEdit}>
-              Save
-            </Button>
-            <Button variant="contained" className="add-record-button" onClick={handleCancelEdit}>
-              Cancel
-            </Button>
-          </Stack>
+      )}
+      {isEditing && (
+        <div>
+          <h3>Edit Item</h3>
+          <form>
+            <TextField label="Sno" className="tff" autoComplete="off" type="text" name="Sno" value={editedItem.Sno} onChange={(e) => handleInputChangeEdit(e, 'Sno')} />
+            <TextField label="Org" className="tff" autoComplete="off" type="text" name="Org" value={editedItem.Org} onChange={(e) => handleInputChangeEdit(e, 'Org')} />
+            <TextField label="TotV" className="tff" autoComplete="off" type="text" name="TotV" value={editedItem.TotV} onChange={(e) => handleInputChangeEdit(e, 'TotV')} />
+            <TextField label="Rate" className="tff" autoComplete="off" type="text" name="Rate" value={editedItem.Rate} onChange={(e) => handleInputChangeEdit(e, 'Rate')} />
+            <TextField label="Start" className="tff" autoComplete="off" type="date" name="Start" value={editedItem.Start} onChange={(e) => handleInputChangeEdit(e, 'Start')} />
+            <TextField label="End" className="tff" autoComplete="off" type="date" name="End" value={editedItem.End} onChange={(e) => handleInputChangeEdit(e, 'End')} />
+            <TextField label="Status" className="tff" autoComplete="off" type="text" name="Status" value={editedItem.Status} onChange={(e) => handleInputChangeEdit(e, 'Status')} />
+            <div className="button-container">
+              <Button variant="contained" color="success" onClick={handleSubmitEdit}>
+                Submit
+              </Button>
+              <Button variant="contained" color="error" onClick={handleCancelEdit}>
+                Cancel
+              </Button>
+            </div>
+          </form>
         </div>
       )}
 
-
-    </div>
-    <div className="pagination">
-        {Array(Math.ceil(filteredSellerinfoData.length / itemsPerPage))
-          .fill(null)
-          .map((_, index) => (
-            <Button key={index + 1} onClick={() => paginate(index + 1)}>
-              {index + 1}
-            </Button>
+      <Table className="data-table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Sno</TableCell>
+            <TableCell>Org</TableCell>
+            <TableCell>TotV</TableCell>
+            <TableCell>Rate</TableCell>
+            <TableCell>Start</TableCell>
+            <TableCell>End</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map(item => (
+            <TableRow key={item.Sno}>
+              <TableCell>{item.Sno}</TableCell>
+              <TableCell>{item.Org}</TableCell>
+              <TableCell>{item.TotV}</TableCell>
+              <TableCell>{item.Rate}</TableCell>
+              <TableCell>{item.Start}</TableCell>
+              <TableCell>{item.End}</TableCell>
+              <TableCell>{item.Status}</TableCell>
+              <TableCell>
+                <div className="button-container">
+                  <Button variant="contained" color="success" onClick={() => handleEdit(item)}>Edit</Button>
+                  <Button variant="contained" color="error" onClick={() => handleDelete(item)}>Delete</Button>
+                </div>
+              </TableCell>
+            </TableRow>
           ))}
-      </div>
-      </>
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
