@@ -1,5 +1,5 @@
 .admin-container {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
   }
@@ -31,3 +31,10 @@
     margin-right: 10px;
   }
   
+  .customTextField {
+    width: 300px; 
+  }
+  
+  .customSelect {
+    width: 300px; 
+  }

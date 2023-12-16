@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { Button, TextField, Table, TableHead, TableBody, TableRow, TableCell, Select, MenuItem } from '@mui/material';
 import './Style.css';
 
 const Sellerinfo = () => {
@@ -14,7 +14,7 @@ const Sellerinfo = () => {
     Rate: '',
     Start: '',
     End: '',
-    Status: '',
+    Status: 'Select',
   });
 
   useEffect(() => {
@@ -167,13 +167,17 @@ const Sellerinfo = () => {
         <div>
           <h3>Add New Item</h3>
           <form>
-            <TextField label="Sno" className='tff' autoComplete="off" type="text" name="Sno" value={newItem.Sno} onChange={handleInputChange} />
-            <TextField label="Org" className='tff' autoComplete="off" type="text" name="Org" value={newItem.Org} onChange={handleInputChange} />
-            <TextField label="TotV" className='tff' autoComplete="off" type="text" name="TotV" value={newItem.TotV} onChange={handleInputChange} />
-            <TextField label="Rate" className='tff' autoComplete="off" type="text" name="Rate" value={newItem.Rate} onChange={handleInputChange} />
-            <TextField label="Start" className='tff' autoComplete="off" type="date" name="Start" value={newItem.Start} onChange={handleInputChange} />
-            <TextField label="End" className='tff' autoComplete="off" type="date" name="End" value={newItem.End} onChange={handleInputChange} />
-            <TextField label="Status" className='tff' autoComplete="off" type="text" name="Status" value={newItem.Status} onChange={handleInputChange} />
+            <TextField label="Sno" className='tff customTextField' autoComplete="off" type="text" name="Sno" value={newItem.Sno} onChange={handleInputChange} />
+            <TextField label="Org" className='tff customTextField' autoComplete="off" type="text" name="Org" value={newItem.Org} onChange={handleInputChange} />
+            <TextField label="TotV" className='tff customTextField' autoComplete="off" type="text" name="TotV" value={newItem.TotV} onChange={handleInputChange} />
+            <TextField label="Rate" className='tff customTextField' autoComplete="off" type="text" name="Rate" value={newItem.Rate} onChange={handleInputChange} />
+            <TextField label="" className='tff customTextField' autoComplete="off" type="date" name="Start" value={newItem.Start} onChange={handleInputChange} />
+            <TextField label="" className='tff customTextField' autoComplete="off" type="date" name="End" value={newItem.End} onChange={handleInputChange} />
+            <Select className='tff customSelect' autoComplete="off" name="Status" value={newItem.Status} onChange={handleInputChange}>                     
+            <MenuItem value="Select">Select</MenuItem>
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Inactive">Inactive</MenuItem>
+            </Select>
             <div className="button-container">
               <Button variant="contained" color="success" onClick={handleSubmitAdd}>Submit</Button>
               <Button variant="contained" color="error" onClick={handleCancelAdd}>Cancel</Button>
@@ -185,13 +189,16 @@ const Sellerinfo = () => {
         <div>
           <h3>Edit Item</h3>
           <form>
-            <TextField label="Sno" className="tff" autoComplete="off" type="text" name="Sno" value={editedItem.Sno} onChange={(e) => handleInputChangeEdit(e, 'Sno')} />
-            <TextField label="Org" className="tff" autoComplete="off" type="text" name="Org" value={editedItem.Org} onChange={(e) => handleInputChangeEdit(e, 'Org')} />
-            <TextField label="TotV" className="tff" autoComplete="off" type="text" name="TotV" value={editedItem.TotV} onChange={(e) => handleInputChangeEdit(e, 'TotV')} />
-            <TextField label="Rate" className="tff" autoComplete="off" type="text" name="Rate" value={editedItem.Rate} onChange={(e) => handleInputChangeEdit(e, 'Rate')} />
-            <TextField label="Start" className="tff" autoComplete="off" type="date" name="Start" value={editedItem.Start} onChange={(e) => handleInputChangeEdit(e, 'Start')} />
-            <TextField label="End" className="tff" autoComplete="off" type="date" name="End" value={editedItem.End} onChange={(e) => handleInputChangeEdit(e, 'End')} />
-            <TextField label="Status" className="tff" autoComplete="off" type="text" name="Status" value={editedItem.Status} onChange={(e) => handleInputChangeEdit(e, 'Status')} />
+            <TextField label="Sno" className="tff customTextField" autoComplete="off" type="text" name="Sno" value={editedItem.Sno} onChange={(e) => handleInputChangeEdit(e, 'Sno')} />
+            <TextField label="Org" className="tff customTextField" autoComplete="off" type="text" name="Org" value={editedItem.Org} onChange={(e) => handleInputChangeEdit(e, 'Org')} />
+            <TextField label="TotV" className="tff customTextField" autoComplete="off" type="text" name="TotV" value={editedItem.TotV} onChange={(e) => handleInputChangeEdit(e, 'TotV')} />
+            <TextField label="Rate" className="tff customTextField" autoComplete="off" type="text" name="Rate" value={editedItem.Rate} onChange={(e) => handleInputChangeEdit(e, 'Rate')} />
+            <TextField label="" className="tff customTextField" autoComplete="off" type="date" name="Start" value={editedItem.Start} onChange={(e) => handleInputChangeEdit(e, 'Start')} />
+            <TextField label="" className="tff customTextField" autoComplete="off" type="date" name="End" value={editedItem.End} onChange={(e) => handleInputChangeEdit(e, 'End')} />
+            <Select  className="tff customSelect" autoComplete="off" name="Status" value={editedItem.Status} onChange={(e) => handleInputChangeEdit(e, 'Status')}>           
+            <MenuItem value="Active">Active</MenuItem>
+            <MenuItem value="Inactive">Inactive</MenuItem>
+             </Select>        
             <div className="button-container">
               <Button variant="contained" color="success" onClick={handleSubmitEdit}>
                 Submit
