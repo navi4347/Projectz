@@ -38,3 +38,39 @@
   .customSelect {
     width: 300px; 
   }
+
+  .login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    background-color: #ccc;
+  }
+  
+  .left {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .right {
+    flex: 1;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .border{
+    border-left: 1px solid gray;
+    height: 80%; 
+    margin: 0 20px;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+  }
+  

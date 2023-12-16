@@ -37,6 +37,24 @@ function handleDisconnect() {
 
 handleDisconnect();
 
+app.post('/api/login', (req, res) => {
+  const { username, password, userType } = req.body;
+
+  const query = `SELECT * FROM Login WHERE username = ? AND password = ? AND role = ?`;
+
+  db.query(query, [username, password, userType], (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else if (results.length === 0) {
+      res.status(401).json({ error: 'Invalid username or password.' });
+    } else {
+      req.userType = userType;
+      res.json({ message: 'Login successful!' });
+    }
+  });
+});
+
 // Sellerinfo start
 app.get('/api/sellerinfo', (req, res) => {
   const query = 'SELECT Sno, Org, TotV, Rate, Start, End, Status FROM sellerinfo';
