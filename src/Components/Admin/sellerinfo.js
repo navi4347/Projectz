@@ -165,7 +165,7 @@ const Sellerinfo = () => {
       <Button variant="contained" color="primary" onClick={handleAdd}>Add</Button>
       {isAdding && (
         <div>
-          <h3>Add New Item</h3>
+         
           <form>
             <TextField label="Sno" className='tff customTextField' autoComplete="off" type="text" name="Sno" value={newItem.Sno} onChange={handleInputChange} />
             <TextField label="Org" className='tff customTextField' autoComplete="off" type="text" name="Org" value={newItem.Org} onChange={handleInputChange} />
