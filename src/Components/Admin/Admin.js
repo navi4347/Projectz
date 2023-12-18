@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { styled, useTheme, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -22,9 +22,14 @@ import MailIcon from '@mui/icons-material/MoveToInbox';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Sellerinfo from './sellerinfo'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import BusinessIcon from '@mui/icons-material/Business';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Flipkart from './Flipkart'
 import Dell from './DELL'
 import './App.css'
+import Content from './Content'
 import Amazon from './Amazon'
 const drawerWidth = 240;
 
@@ -108,12 +113,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+  justifyContent: 'center',
 }));
 
+
+
 export default function Admin() {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
   const [selectedContent, setSelectedContent] = React.useState(null);
 
   const handleDrawerOpen = () => {
@@ -230,24 +237,35 @@ export default function Admin() {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+        <IconButton>
+        <AccountTreeIcon sx={{ color: 'white' }} />
+        </IconButton>
+        <Typography variant="h5" sx={{ my: 2 }}>
+        Dashboard 
+      </Typography>
+      <IconButton onClick={handleDrawerClose} style={{ fontSize: '2rem' }}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <List>
           {['Sellerinfo', 'Amazon', 'Flipkart', 'Dell'].map((text, index) => (
-            <ListItem
-              key={text}
-              disablePadding
-              onClick={() => handleListItemClick(text)}
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <MailIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
+           <ListItem
+           key={text}
+           disablePadding
+           onClick={() => handleListItemClick(text)}
+         >
+           <ListItemButton>
+           <ListItemIcon>
+  {text === 'Sellerinfo' && <AccountCircle sx={{ color: 'white' }} />}
+  {text === 'Amazon' && <SearchIcon sx={{ color: 'white' }} />}
+  {text === 'Flipkart' && <ShoppingCartIcon sx={{ color: 'white' }} />} 
+  {text === 'Dell' && <BusinessIcon sx={{ color: 'white' }} />} 
+</ListItemIcon>
+
+             <ListItemText primary={text} />
+           </ListItemButton>
+         </ListItem>
+         
           ))}
         </List>
       </Drawer>
@@ -255,7 +273,7 @@ export default function Admin() {
       <Main open={open}>
         <DrawerHeader />
         {selectedContent}
-        {/* Your main content goes here */}
+       <Content />
       </Main>
     </Box>
   );
