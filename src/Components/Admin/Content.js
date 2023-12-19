@@ -6,18 +6,17 @@ import Card from './Layout/Card'
 
 function Content() {
   return (
-    
+      <div>
     <Grid container spacing={2}>
       <Card/>
-        <Grid item xs={6}>
+        <Grid item xs={7}>
         <div><Table/></div>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <div><Bar/></div>
       </Grid>
-    
-     
     </Grid>
+      </div>
   );
 }
 

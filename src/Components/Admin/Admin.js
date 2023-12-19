@@ -1,36 +1,19 @@
 import * as React from 'react';
 import { styled, alpha, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import Typography from '@mui/material/Typography';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/MoveToInbox';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import Sellerinfo from './sellerinfo'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BusinessIcon from '@mui/icons-material/Business';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Flipkart from './Flipkart'
-import Dell from './DELL'
-import './App.css'
-import Content from './Content'
-import Amazon from './Amazon'
+import Empinfo from './EMPinfo';
+import Clients from './Clients';
+import Content from './Content';
+import Sellerinfo from './sellerinfo';
+import Dashboard from './Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import {Box, Typography, CssBaseline, AppBar as MuiAppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, InputBase, Badge,} from '@mui/material';
+import {Menu as MenuIcon,Search as SearchIcon, AccountCircle,Mail as MailIcon,Notifications as NotificationsIcon, MoreVert as MoreIcon,  Business as BusinessIcon,ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,Dashboard as DashboardIcon,} from '@mui/icons-material';
+import './App.css';
+
 const drawerWidth = 240;
 
 const Search = styled('div')(({ theme }) => ({
@@ -75,7 +58,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -91,22 +73,22 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   }),
 );
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
+const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
     transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
   }),
-}));
+);
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -116,45 +98,20 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-
-
 export default function Admin() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const [selectedContent, setSelectedContent] = React.useState(null);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
+  const handleListItemClick = (text) => setSelectedContent(text);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const handleListItemClick = (text) => {
-    switch (text) {
-      case 'Sellerinfo':
-        setSelectedContent(<Sellerinfo />);
-        break;
-      case 'Amazon':
-        setSelectedContent(<Amazon />);
-        break;
-      case 'Flipkart':
-        setSelectedContent(<Flipkart />);
-        break;
-      case 'Dell':
-        setSelectedContent(<Dell />);
-        break;
-      default:
-        setSelectedContent(null);
-    }
-  };
-
-  const handleProfileMenuOpen = (event) => {
+  const handleProfileMenuOpen = () => {
     // Handle profile menu opening
   };
 
-  const handleMobileMenuOpen = (event) => {
+  const handleMobileMenuOpen = () => {
     // Handle mobile menu opening
   };
 
@@ -176,10 +133,7 @@ export default function Admin() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -188,11 +142,7 @@ export default function Admin() {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
+            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
@@ -236,45 +186,51 @@ export default function Admin() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
-        <IconButton>
-        <AccountTreeIcon sx={{ color: 'white' }} />
-        </IconButton>
-        <Typography variant="h5" sx={{ my: 2 }}>
-        Dashboard 
-      </Typography>
-      <IconButton onClick={handleDrawerClose} style={{ fontSize: '2rem' }}>
+        <DrawerHeader>         
+          <Typography variant="h4" sx={{ my: 2 }}>
+            PROJECT
+          </Typography>
+          <IconButton onClick={handleDrawerClose} style={{ fontSize: '2rem' }}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <List>
-          {['Sellerinfo', 'Amazon', 'Flipkart', 'Dell'].map((text, index) => (
-           <ListItem
-           key={text}
-           disablePadding
-           onClick={() => handleListItemClick(text)}
-         >
-           <ListItemButton>
-           <ListItemIcon>
-  {text === 'Sellerinfo' && <AccountCircle sx={{ color: 'white' }} />}
-  {text === 'Amazon' && <SearchIcon sx={{ color: 'white' }} />}
-  {text === 'Flipkart' && <ShoppingCartIcon sx={{ color: 'white' }} />} 
-  {text === 'Dell' && <BusinessIcon sx={{ color: 'white' }} />} 
-</ListItemIcon>
-
-             <ListItemText primary={text} />
-           </ListItemButton>
-         </ListItem>
-         
-          ))}
+          {['Dashboard','Sellerinfo', 'Clients', 'Empinfo', 'Help', 'Settings', 'Logout'].map(
+            (text, index) => (
+              <ListItem
+                key={text}
+                disablePadding
+                onClick={() => handleListItemClick(text)}
+                selected={text === selectedContent}
+                sx={{ marginBottom: 2 }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>                   
+                    {text === 'Dashboard' && <DashboardIcon sx={{ color: 'white' }} />}
+                    {text === 'Sellerinfo' && <ViewInArIcon sx={{ color: 'white' }} />}
+                    {text === 'Clients' && <BusinessIcon sx={{ color: 'white' }} />}
+                    {text === 'Empinfo' && <SwitchAccountIcon sx={{ color: 'white' }} />}
+                    {text === 'Help' && <HelpCenterIcon sx={{ color: 'white' }} />}
+                    {text === 'Settings' && <SettingsIcon sx={{ color: 'white' }} />}
+                    {text === 'Logout' && <LogoutIcon sx={{ color: 'white' }} />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
         </List>
       </Drawer>
 
       <Main open={open}>
         <DrawerHeader />
-        {selectedContent}
-       <Content />
+        {selectedContent === 'Dashboard' && <Dashboard />}
+        {selectedContent === 'Sellerinfo' && <Sellerinfo />}
+        {selectedContent === 'Empinfo' && <Empinfo />}
+        {selectedContent === 'Clients' && <Clients />}
       </Main>
+
+      {selectedContent === null && <Content />}
     </Box>
   );
 }
