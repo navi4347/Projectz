@@ -20,11 +20,10 @@ import Sellerinfo from './Components/Admin/sellerinfo';
 import EMPinfo from './Components/Admin/EMPinfo';
 import Ginfo from './Components/Admin/Ginfo';
 import Ninfo from './Components/Admin/Ninfo';
-
 function App() {
   return (
     <Router>
-      <Routes>
+      <Routes>   
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/user" element={<User />} />

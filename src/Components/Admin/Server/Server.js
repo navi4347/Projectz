@@ -1030,9 +1030,8 @@ app.delete('/api/ersellerinfo/:Seller', (req, res) => {
   });
 });
 // ERSellerinfo end
-// EMPinfo start
 app.get('/api/empinfo', (req, res) => {
-  const query = 'SELECT Sno, EmpName, EmpID, Dep, Location, TotV, Value, Red, NonRed FROM empinfo';
+  const query = 'SELECT Sno, EmpName, EmpID, Dep, Location, TotV, Value, Company, Allocated FROM empinfo';
 
   db.query(query, (err, results) => {
     if (err) {
@@ -1045,9 +1044,9 @@ app.get('/api/empinfo', (req, res) => {
 });
 
 app.post('/api/empinfo', (req, res) => {
-  const { Sno, EmpName, EmpID, Dep, Location, TotV, Value, Red, NonRed } = req.body;
+  const { Sno, EmpName, EmpID, Dep, Location, TotV, Value, Company, Allocated } = req.body;
 
-  if (!Sno || !EmpName || !EmpID || !Dep || !Location || !TotV || !Value || !Red || !NonRed) {
+  if (!Sno || !EmpName || !EmpID || !Dep || !Location || !TotV || !Value || !Company || !Allocated) {
     return res.status(400).json({ error: 'Missing required data' });
   }
 
@@ -1061,8 +1060,8 @@ app.post('/api/empinfo', (req, res) => {
       res.status(400).json({ error: 'Duplicate EmpName', details: 'EmpName must be unique' });
     } else {
       // Proceed with the insertion
-      const insertQuery = 'INSERT INTO empinfo (Sno, EmpName, EmpID, Dep, Location, TotV, Value, Red, NonRed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      const values = [Sno, EmpName, EmpID, Dep, Location, TotV, Value, Red, NonRed];
+      const insertQuery = 'INSERT INTO empinfo (Sno, EmpName, EmpID, Dep, Location, TotV, Value, Company, Allocated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      const values = [Sno, EmpName, EmpID, Dep, Location, TotV, Value, Company, Allocated];
 
       db.query(insertQuery, values, (err, results) => {
         if (err) {
@@ -1078,10 +1077,10 @@ app.post('/api/empinfo', (req, res) => {
 
 app.put('/api/empinfo/:EmpName', (req, res) => {
   const EmpName = req.params.EmpName;
-  const { Sno, EmpID, Dep, Location, TotV, Value, Red, NonRed } = req.body;
+  const { Sno, EmpID, Dep, Location, TotV, Value, Company, Allocated } = req.body;
 
-  const updateQuery = 'UPDATE empinfo SET Sno=?, EmpID=?, Dep=?, Location=?, TotV=?, Value=?, Red=?, NonRed=? WHERE EmpName=?';
-  db.query(updateQuery, [Sno, EmpID, Dep, Location, TotV, Value, Red, NonRed, EmpName], (err, results) => {
+  const updateQuery = 'UPDATE empinfo SET Sno=?, EmpID=?, Dep=?, Location=?, TotV=?, Value=?, Company=?, Allocated=? WHERE EmpName=?';
+  db.query(updateQuery, [Sno, EmpID, Dep, Location, TotV, Value, Company, Allocated, EmpName], (err, results) => {
     if (err) {
       console.error('Error updating data:', err);
       res.status(500).json({ error: 'Failed to update data', details: err.message });
@@ -1104,6 +1103,7 @@ app.delete('/api/empinfo/:EmpName', (req, res) => {
     }
   });
 });
+
 // EMPinfo end
 // Ginfo start
 app.get('/api/ginfo', (req, res) => {

@@ -35,7 +35,7 @@ function CustomCard({ value, icon, title }) {
         fontFamily: '"Roboto Mono", monospace',
         color:'#ffffff',
        background:'#1976d2',
-       marginTop:'100px',
+       marginTop:'90px',
       }}
       
     >

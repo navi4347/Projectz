@@ -1,17 +1,45 @@
 import * as React from 'react';
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import Empinfo from './EMPinfo';
-import Clients from './Clients';
+import Clientinfo from './Clients';
 import Content from './Content';
 import Sellerinfo from './sellerinfo';
-import Dashboard from './Dashboard';
+import Dashboards from './Dashboard';
+import IBM from './IBM'
 import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
-import {Box, Typography, CssBaseline, AppBar as MuiAppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, InputBase, Badge,} from '@mui/material';
-import {Menu as MenuIcon,Search as SearchIcon, AccountCircle,Mail as MailIcon,Notifications as NotificationsIcon, MoreVert as MoreIcon,  Business as BusinessIcon,ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,Dashboard as DashboardIcon,} from '@mui/icons-material';
+import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import {
+  Box,
+  Typography,
+  CssBaseline,
+  AppBar as MuiAppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  InputBase,
+  Badge,
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Search as SearchIcon,
+  AccountCircle,
+  Mail as MailIcon,
+  Notifications as NotificationsIcon,
+  MoreVert as MoreIcon,
+  Business as BusinessIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Dashboard as DashboardIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+} from '@mui/icons-material';
 import './App.css';
 
 const drawerWidth = 240;
@@ -55,40 +83,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+  flexGrow: 1,
+  transition: theme.transitions.create('margin', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-${drawerWidth}px`,
+  ...(open && {
     transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
+    marginLeft: 0,
   }),
-);
+}));
 
-const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
+const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: `${drawerWidth}px`,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-);
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -98,21 +122,126 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
+const SellerDropdown = ({ isOpen, onClick }) => {
+  return (
+    <div>
+      <ListItemButton onClick={onClick}>
+        <ListItemIcon>
+          <ViewInArIcon  sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Sellerinfo" />
+        {isOpen ? (
+          <KeyboardArrowUpIcon sx={{ color: 'white' }} />
+        ) : (
+          <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+        )}
+      </ListItemButton>
+      {isOpen && (
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Amazon" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Flipkart" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Myntra" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+    </div>
+  );
+};
+
+const ClientDropdown = ({ isOpen, onClick }) => {
+  return (
+    <div>
+      <ListItemButton onClick={onClick}>
+        <ListItemIcon>
+          <BusinessIcon  sx={{ color: 'white' }} />
+        </ListItemIcon>
+        <ListItemText primary="Clientinfo" />
+        {isOpen ? (
+          <KeyboardArrowUpIcon sx={{ color: 'white' }} />
+        ) : (
+          <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+        )}
+      </ListItemButton>
+      {isOpen && (
+        <List>
+          <ListItem disablePadding>
+          <ListItemButton >
+              <ListItemText primary="IBM" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="DELL" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="TCS" />
+              <ListItemIcon>
+              <KeyboardArrowRightIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+    </div>
+  );
+};
+
 export default function Admin() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const [selectedContent, setSelectedContent] = React.useState(null);
+  const [sellerDropdownOpen, setSellerDropdownOpen] = React.useState(false);
+  const [clientDropdownOpen, setClientDropdownOpen] = React.useState(false);
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
   const handleListItemClick = (text) => setSelectedContent(text);
-
+  
+ 
   const handleProfileMenuOpen = () => {
     // Handle profile menu opening
   };
 
   const handleMobileMenuOpen = () => {
     // Handle mobile menu opening
+  };
+
+  const handleSellerArrowClick = () => {
+    setSellerDropdownOpen(!sellerDropdownOpen);
+    setClientDropdownOpen(false); // Close client dropdown
+  };
+
+  const handleClientArrowClick = () => {
+    setClientDropdownOpen(!clientDropdownOpen);
+    setSellerDropdownOpen(false); // Close seller dropdown
   };
 
   return (
@@ -186,7 +315,7 @@ export default function Admin() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>         
+        <DrawerHeader>
           <Typography variant="h4" sx={{ my: 2 }}>
             PROJECT
           </Typography>
@@ -195,28 +324,32 @@ export default function Admin() {
           </IconButton>
         </DrawerHeader>
         <List>
-          {['Dashboard','Sellerinfo', 'Clients', 'Empinfo', 'Help', 'Settings', 'Logout'].map(
+          {['Dashboard', 'Sellerinfo', 'Clientinfo', 'Empinfo', 'Logout'].map(
             (text, index) => (
-              <ListItem
-                key={text}
-                disablePadding
-                onClick={() => handleListItemClick(text)}
-                selected={text === selectedContent}
-                sx={{ marginBottom: 2 }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>                   
-                    {text === 'Dashboard' && <DashboardIcon sx={{ color: 'white' }} />}
-                    {text === 'Sellerinfo' && <ViewInArIcon sx={{ color: 'white' }} />}
-                    {text === 'Clients' && <BusinessIcon sx={{ color: 'white' }} />}
-                    {text === 'Empinfo' && <SwitchAccountIcon sx={{ color: 'white' }} />}
-                    {text === 'Help' && <HelpCenterIcon sx={{ color: 'white' }} />}
-                    {text === 'Settings' && <SettingsIcon sx={{ color: 'white' }} />}
-                    {text === 'Logout' && <LogoutIcon sx={{ color: 'white' }} />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
+              <div key={text}>
+                {text === 'Sellerinfo' ? (
+                  <SellerDropdown isOpen={sellerDropdownOpen} onClick={handleSellerArrowClick} />
+                ) : text === 'Clientinfo' ? (
+                  <ClientDropdown isOpen={clientDropdownOpen} onClick={handleClientArrowClick} />
+                ) : (
+                  <ListItem
+                    key={text}
+                    disablePadding
+                    onClick={() => handleListItemClick(text)}
+                    selected={text === selectedContent}
+                    sx={{ marginBottom: 2 }}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {text === 'Dashboard' && <DashboardIcon sx={{ color: 'white' }} />}
+                        {text === 'Empinfo' && <SwitchAccountIcon sx={{ color: 'white' }} />}
+                        {text === 'Logout' && <LogoutIcon sx={{ color: 'white' }} />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+              </div>
             )
           )}
         </List>
@@ -224,10 +357,12 @@ export default function Admin() {
 
       <Main open={open}>
         <DrawerHeader />
-        {selectedContent === 'Dashboard' && <Dashboard />}
+        {selectedContent === 'Dashboard' && <Dashboards />}
         {selectedContent === 'Sellerinfo' && <Sellerinfo />}
+        {selectedContent === 'Clientinfo' && <Clientinfo />}
         {selectedContent === 'Empinfo' && <Empinfo />}
-        {selectedContent === 'Clients' && <Clients />}
+        {selectedContent === 'IBM' && <IBM />}
+
       </Main>
 
       {selectedContent === null && <Content />}
