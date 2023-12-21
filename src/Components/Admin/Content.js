@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid} from '@mui/material';
-import Pie from './Layout/Pie'
-import Bar from './Layout/Bar'
-import Card from './Layout/Card'
+import Pie from './Charts/Pie'
+import Bar from './Charts/Bar'
+import Card from './Charts/Card'
 
 function Content() {
   return (

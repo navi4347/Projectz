@@ -5,12 +5,12 @@ import Clientinfo from './Clients';
 import Content from './Content';
 import Sellerinfo from './sellerinfo';
 import Dashboards from './Dashboard';
-import IBM from './IBM';
-import TCS from './TCS';
-import DELL from './DELL';
-import Flipkart from './Flipkart';
-import Amazon from './Amazon';
-import Myntra from './Myntra';
+import IBM from './Clientinfo/IBM';
+import TCS from './Clientinfo/TCS';
+import DELL from './Clientinfo/DELL';
+import Flipkart from './Sellerinfo/Flipkart';
+import Amazon from './Sellerinfo/Amazon';
+import Myntra from './Sellerinfo/Myntra';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
@@ -45,7 +45,7 @@ import {
   KeyboardArrowDown as KeyboardArrowDownIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
 } from '@mui/icons-material';
-import './App.css';
+import './Style.css';
 
 const drawerWidth = 240;
 
@@ -149,12 +149,12 @@ export default function Admin() {
 
   const handleSellerArrowClick = () => {
     setSellerDropdownOpen(!sellerDropdownOpen);
-    setClientDropdownOpen(false); // Close client dropdown
+    setClientDropdownOpen(false); 
   };
 
   const handleClientArrowClick = () => {
     setClientDropdownOpen(!clientDropdownOpen);
-    setSellerDropdownOpen(false); // Close seller dropdown
+    setSellerDropdownOpen(false); 
   };
 
   const SellerDropdown = ({ isOpen, onClick }) => {
@@ -324,9 +324,13 @@ export default function Admin() {
           <Typography variant="h4" sx={{ my: 2 }}>
             PROJECT
           </Typography>
-          <IconButton onClick={handleDrawerClose} style={{ fontSize: '2rem' }}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
+          <IconButton
+  onClick={handleDrawerClose}
+  style={{ fontSize: '2rem', color: 'white' }}
+>
+  {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+</IconButton>
+
         </DrawerHeader>
         <List>
           {['Dashboard', 'Sellerinfo', 'Clientinfo', 'Empinfo', 'Logout'].map(
