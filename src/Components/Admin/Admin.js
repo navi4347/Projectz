@@ -5,7 +5,12 @@ import Clientinfo from './Clients';
 import Content from './Content';
 import Sellerinfo from './sellerinfo';
 import Dashboards from './Dashboard';
-import IBM from './IBM'
+import IBM from './IBM';
+import TCS from './TCS';
+import DELL from './DELL';
+import Flipkart from './Flipkart';
+import Amazon from './Amazon';
+import Myntra from './Myntra';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
@@ -122,98 +127,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'center',
 }));
 
-const SellerDropdown = ({ isOpen, onClick }) => {
-  return (
-    <div>
-      <ListItemButton onClick={onClick}>
-        <ListItemIcon>
-          <ViewInArIcon  sx={{ color: 'white' }} />
-        </ListItemIcon>
-        <ListItemText primary="Sellerinfo" />
-        {isOpen ? (
-          <KeyboardArrowUpIcon sx={{ color: 'white' }} />
-        ) : (
-          <KeyboardArrowDownIcon sx={{ color: 'white' }} />
-        )}
-      </ListItemButton>
-      {isOpen && (
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Amazon" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Flipkart" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Myntra" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-        </List>
-      )}
-    </div>
-  );
-};
-
-const ClientDropdown = ({ isOpen, onClick }) => {
-  return (
-    <div>
-      <ListItemButton onClick={onClick}>
-        <ListItemIcon>
-          <BusinessIcon  sx={{ color: 'white' }} />
-        </ListItemIcon>
-        <ListItemText primary="Clientinfo" />
-        {isOpen ? (
-          <KeyboardArrowUpIcon sx={{ color: 'white' }} />
-        ) : (
-          <KeyboardArrowDownIcon sx={{ color: 'white' }} />
-        )}
-      </ListItemButton>
-      {isOpen && (
-        <List>
-          <ListItem disablePadding>
-          <ListItemButton >
-              <ListItemText primary="IBM" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="DELL" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="TCS" />
-              <ListItemIcon>
-              <KeyboardArrowRightIcon style={{ color: 'white' }} />
-      </ListItemIcon>
-            </ListItemButton>
-          </ListItem>
-        </List>
-      )}
-    </div>
-  );
-};
-
 export default function Admin() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -244,6 +157,98 @@ export default function Admin() {
     setSellerDropdownOpen(false); // Close seller dropdown
   };
 
+  const SellerDropdown = ({ isOpen, onClick }) => {
+    return (
+      <div>
+        <ListItemButton onClick={onClick}>
+          <ListItemIcon>
+            <ViewInArIcon  sx={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText primary="Sellerinfo" />
+          {isOpen ? (
+            <KeyboardArrowUpIcon sx={{ color: 'white' }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+          )}
+        </ListItemButton>
+        {isOpen && (
+          <List>
+            <ListItem disablePadding onClick={() => handleListItemClick('Amazon')}>
+              <ListItemButton>
+                <ListItemText primary="Amazon" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding onClick={() => handleListItemClick('Flipkart')}>
+              <ListItemButton>
+                <ListItemText primary="Flipkart" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding onClick={() => handleListItemClick('Myntra')}>
+              <ListItemButton>
+                <ListItemText primary="Myntra" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+          </List>
+        )}
+      </div>
+    );
+  };
+  
+  const ClientDropdown = ({ isOpen, onClick }) => {
+    return (
+      <div>
+        <ListItemButton onClick={onClick}>
+          <ListItemIcon>
+            <BusinessIcon  sx={{ color: 'white' }} />
+          </ListItemIcon>
+          <ListItemText primary="Clientinfo" />
+          {isOpen ? (
+            <KeyboardArrowUpIcon sx={{ color: 'white' }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+          )}
+        </ListItemButton>
+        {isOpen && (
+          <List>
+           <ListItem disablePadding onClick={() => handleListItemClick('IBM')}>
+            <ListItemButton >
+                <ListItemText primary="IBM" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding onClick={() => handleListItemClick('DELL')}>
+              <ListItemButton>
+                <ListItemText primary="DELL" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding onClick={() => handleListItemClick('TCS')}>
+              <ListItemButton>
+                <ListItemText primary="TCS" />
+                <ListItemIcon>
+                <KeyboardArrowRightIcon style={{ color: 'white' }} />
+        </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+          </List>
+        )}
+      </div>
+    );
+  };
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -362,6 +367,11 @@ export default function Admin() {
         {selectedContent === 'Clientinfo' && <Clientinfo />}
         {selectedContent === 'Empinfo' && <Empinfo />}
         {selectedContent === 'IBM' && <IBM />}
+        {selectedContent === 'TCS' && <TCS />}
+        {selectedContent === 'DELL' && <DELL />}
+        {selectedContent === 'Flipkart' && <Flipkart />}
+        {selectedContent === 'Amazon' && <Amazon />}
+        {selectedContent === 'Myntra' && <Myntra />}
 
       </Main>
 
