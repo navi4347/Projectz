@@ -131,7 +131,6 @@ export default function Admin() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const [selectedContent, setSelectedContent] = React.useState(null);
-  const [sellerDropdownOpen, setSellerDropdownOpen] = React.useState(false);
   const [clientDropdownOpen, setClientDropdownOpen] = React.useState(false);
 
   const handleDrawerOpen = () => setOpen(true);
@@ -147,61 +146,14 @@ export default function Admin() {
     // Handle mobile menu opening
   };
 
-  const handleSellerArrowClick = () => {
-    setSellerDropdownOpen(!sellerDropdownOpen);
-    setClientDropdownOpen(false); 
-  };
+  
 
   const handleClientArrowClick = () => {
     setClientDropdownOpen(!clientDropdownOpen);
-    setSellerDropdownOpen(false); 
+   
   };
 
-  const SellerDropdown = ({ isOpen, onClick }) => {
-    return (
-      <div>
-        <ListItemButton onClick={onClick}>
-          <ListItemIcon>
-            <ViewInArIcon  sx={{ color: 'white' }} />
-          </ListItemIcon>
-          <ListItemText primary="Sellerinfo" />
-          {isOpen ? (
-            <KeyboardArrowUpIcon sx={{ color: 'white' }} />
-          ) : (
-            <KeyboardArrowDownIcon sx={{ color: 'white' }} />
-          )}
-        </ListItemButton>
-        {isOpen && (
-          <List>
-            <ListItem disablePadding onClick={() => handleListItemClick('Amazon')}>
-              <ListItemButton>
-                <ListItemText primary="Amazon" />
-                <ListItemIcon>
-                <KeyboardArrowRightIcon style={{ color: 'white' }} />
-        </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding onClick={() => handleListItemClick('Flipkart')}>
-              <ListItemButton>
-                <ListItemText primary="Flipkart" />
-                <ListItemIcon>
-                <KeyboardArrowRightIcon style={{ color: 'white' }} />
-        </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding onClick={() => handleListItemClick('Myntra')}>
-              <ListItemButton>
-                <ListItemText primary="Myntra" />
-                <ListItemIcon>
-                <KeyboardArrowRightIcon style={{ color: 'white' }} />
-        </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-          </List>
-        )}
-      </div>
-    );
-  };
+
   
   const ClientDropdown = ({ isOpen, onClick }) => {
     return (
@@ -336,9 +288,7 @@ export default function Admin() {
           {['Dashboard', 'Sellerinfo', 'Clientinfo', 'Empinfo', 'Logout'].map(
             (text, index) => (
               <div key={text}>
-                {text === 'Sellerinfo' ? (
-                  <SellerDropdown isOpen={sellerDropdownOpen} onClick={handleSellerArrowClick} />
-                ) : text === 'Clientinfo' ? (
+                {text === 'Clientinfo' ? (
                   <ClientDropdown isOpen={clientDropdownOpen} onClick={handleClientArrowClick} />
                 ) : (
                   <ListItem
@@ -353,6 +303,8 @@ export default function Admin() {
                         {text === 'Dashboard' && <DashboardIcon sx={{ color: 'white' }} />}
                         {text === 'Empinfo' && <SwitchAccountIcon sx={{ color: 'white' }} />}
                         {text === 'Logout' && <LogoutIcon sx={{ color: 'white' }} />}
+                        {text === 'Sellerinfo' && <ViewInArIcon sx={{ color: 'white' }} />}
+
                       </ListItemIcon>
                       <ListItemText primary={text} />
                     </ListItemButton>

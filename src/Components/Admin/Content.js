@@ -1,30 +1,27 @@
-import React from 'react';
-import { Grid} from '@mui/material';
-import Pie from './Charts/Pie'
-import Bar from './Charts/Bar'
-import Card from './Charts/Card'
+import * as React from 'react';
+import { experimentalStyled as styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
-function Content() {
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+
+export default function ResponsiveGrid() {
   return (
-      <div>
-    <Grid container spacing={2}>
-      <Card/>
-        <Grid item xs={7}>
-        <div><Bar/></div>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {Array.from(Array(6)).map((_, index) => (
+          <Grid item xs={2} sm={4} md={4} key={index}>
+            <Item>xs=2</Item>
+          </Grid>
+        ))}
       </Grid>
-      <Grid item xs={4}>
-      <div><Pie/></div>
-        <div><Pie/></div>
-      </Grid>
-      <Grid item xs={7}>
-        <div><Bar/></div>
-      </Grid>
-      <Grid item xs={4}>
-        <div><Bar/></div>
-      </Grid>
-    </Grid>
-      </div>
+    </Box>
   );
 }
-
-export default Content;

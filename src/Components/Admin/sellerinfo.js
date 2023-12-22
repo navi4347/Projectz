@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -19,6 +18,13 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
 
+  const localRowStyle = {
+    backgroundColor: '#ddd',
+  };
+  
+  const localCellTextStyle = {
+    color: '#000',
+  };
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -31,18 +37,18 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell align="Center">{row.Sno}</TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell align="center">{row.Sno}</TableCell>
+        <TableCell  align="center" component="th" scope="row">
           {row.Org}
         </TableCell>
-        <TableCell align="Center">{row.TotV}</TableCell>
-        <TableCell align="Center">{row.Rate}</TableCell>
-        <TableCell align="Center">{row.Start}</TableCell>
-        <TableCell align="Center">{row.End}</TableCell>
-        <TableCell align="Center">{row.Status}</TableCell>
+        <TableCell align="center">{row.TotV}</TableCell>
+        <TableCell align="center">{row.Rate}</TableCell>
+        <TableCell align="center">{row.Start}</TableCell>
+        <TableCell align="center">{row.End}</TableCell>
+        <TableCell align="center">{row.Status}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -50,24 +56,20 @@ function Row(props) {
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                  <TableRow style={localRowStyle}>
+                    <TableCell style={localCellTextStyle}>Type</TableCell>
+                    <TableCell style={localCellTextStyle}>Vouchers</TableCell>
+                    <TableCell style={localCellTextStyle}>Value</TableCell>
+                    <TableCell style={localCellTextStyle}>Amount</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {row.history && row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                    <TableRow key={historyRow.id}>
+                      <TableCell>{historyRow.type}</TableCell>
+                      <TableCell>{historyRow.vouchers}</TableCell>
+                      <TableCell>{historyRow.value}</TableCell>
+                      <TableCell>{historyRow.amount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -90,46 +92,86 @@ Row.propTypes = {
     Status: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        type: PropTypes.string.isRequired,
+        vouchers: PropTypes.number.isRequired,
+        value: PropTypes.number.isRequired,
         amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
       }),
     ),
     Org: PropTypes.string.isRequired,
   }).isRequired,
 };
 
+const sellerinfoData = [
+  {
+    Sno: "1",
+    TotV: "25",
+    Rate: "50",
+    Start: "2023-01-01",
+    End: "2023-12-31",
+    Status: "Active",
+    Org: "Amazon",
+    history: [
+      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
+      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
+      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
+    ],
+  },
+  {
+    Sno: "2",
+    TotV: "25",
+    Rate: "50",
+    Start: "2023-01-01",
+    End: "2023-12-31",
+    Status: "Active",
+    Org: "Flipkart",
+    history: [
+      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
+      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
+      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
+    ],
+  },
+  {
+    Sno: "3",
+    TotV: "25",
+    Rate: "50",
+    Start: "2023-01-01",
+    End: "2023-12-31",
+    Status: "Active",
+    Org: "Myntra",
+    history: [
+      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
+      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
+      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
+    ],
+  },
+];
+const globalRowStyle = {
+  backgroundColor: '#000',
+};
+
+const globalCellTextStyle = {
+  color: '#fff',
+};
 export default function CollapsibleTable() {
-  const [rows, setRows] = useState([]);
-
-
-  useEffect(() => {
-    axios.get('http://127.0.0.1:5000/api/sellerinfo')
-      .then(response => {
-        setRows(response.data.sellerinfoData);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell align="Center">S.No</TableCell>
-            <TableCell align="Center">Sellers</TableCell>
-            <TableCell align="Center">Vouchers</TableCell>
-            <TableCell align="Center">Rate</TableCell>
-            <TableCell align="Center">Start</TableCell>
-            <TableCell align="Center">End</TableCell>
-            <TableCell align="Center">Status</TableCell>
-          </TableRow>
+        <TableRow style={globalRowStyle}>
+  <TableCell />
+  <TableCell align="center" style={globalCellTextStyle}>S.No</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>Sellers</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>Vouchers</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>Rate</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>Start</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>End</TableCell>
+  <TableCell align="center" style={globalCellTextStyle}>Status</TableCell>
+</TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {sellerinfoData.map((row, index) => (
             <Row key={index} row={row} />
           ))}
         </TableBody>
