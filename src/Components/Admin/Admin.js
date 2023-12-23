@@ -130,7 +130,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Admin() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const [selectedContent, setSelectedContent] = React.useState(null);
+  const [selectedContent, setSelectedContent] = React.useState('Dashboard');
   const [clientDropdownOpen, setClientDropdownOpen] = React.useState(false);
 
   const handleDrawerOpen = () => setOpen(true);

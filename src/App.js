@@ -13,14 +13,20 @@ import IBM from './Components/Admin/Clientinfo/IBM';
 import DELL from './Components/Admin/Clientinfo/DELL';
 import Sellerinfo from './Components/Admin/sellerinfo';
 import EMPinfo from './Components/Admin/EMPinfo';
-
+import Dashboard from './Components/Admin/Dashboard';
 function App() {
   return (
     <Router>
       <Routes>   
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/user" element={<User />} />
+
+        
+        <Route path="/Dashboard" element={<Dashboard />} />
+
+        <Route path="/sellerinfo" element={<Sellerinfo />} />
         <Route path="/amazon" element={<Amazon />} />
         <Route path="/flipkart" element={<Flipkart />} />
         <Route path="/myntra" element={<Myntra />} />
@@ -29,9 +35,11 @@ function App() {
         <Route path="/tcs" element={<TCS />} />
         <Route path="/ibm" element={<IBM />} />
         <Route path="/dell" element={<DELL />} />
-        <Route path="/sellerinfo" element={<Sellerinfo />} />
+
         <Route path="/empinfo" element={<EMPinfo />} />
-        <Route path="/" element={<Login />} />
+
+
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

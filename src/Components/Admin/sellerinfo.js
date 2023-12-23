@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import axios from 'axios';
 
 function Row(props) {
   const { row } = props;
@@ -21,10 +22,12 @@ function Row(props) {
   const localRowStyle = {
     backgroundColor: '#ddd',
   };
-  
+
   const localCellTextStyle = {
     color: '#000',
+    textAlign: 'center',
   };
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -38,7 +41,7 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell align="center">{row.Sno}</TableCell>
-        <TableCell  align="center" component="th" scope="row">
+        <TableCell align="center" component="th" scope="row">
           {row.Org}
         </TableCell>
         <TableCell align="center">{row.TotV}</TableCell>
@@ -66,10 +69,10 @@ function Row(props) {
                 <TableBody>
                   {row.history && row.history.map((historyRow) => (
                     <TableRow key={historyRow.id}>
-                      <TableCell>{historyRow.type}</TableCell>
-                      <TableCell>{historyRow.vouchers}</TableCell>
-                      <TableCell>{historyRow.value}</TableCell>
-                      <TableCell>{historyRow.amount}</TableCell>
+                      <TableCell style={localCellTextStyle}>{historyRow.type}</TableCell>
+                      <TableCell style={localCellTextStyle}>{historyRow.vouchers}</TableCell>
+                      <TableCell style={localCellTextStyle}>{historyRow.value}</TableCell>
+                      <TableCell style={localCellTextStyle}>{historyRow.amount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -103,50 +106,6 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const sellerinfoData = [
-  {
-    Sno: "1",
-    TotV: "25",
-    Rate: "50",
-    Start: "2023-01-01",
-    End: "2023-12-31",
-    Status: "Active",
-    Org: "Amazon",
-    history: [
-      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
-      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
-      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
-    ],
-  },
-  {
-    Sno: "2",
-    TotV: "25",
-    Rate: "50",
-    Start: "2023-01-01",
-    End: "2023-12-31",
-    Status: "Active",
-    Org: "Flipkart",
-    history: [
-      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
-      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
-      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
-    ],
-  },
-  {
-    Sno: "3",
-    TotV: "25",
-    Rate: "50",
-    Start: "2023-01-01",
-    End: "2023-12-31",
-    Status: "Active",
-    Org: "Myntra",
-    history: [
-      { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
-      { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
-      { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
-    ],
-  },
-];
 const globalRowStyle = {
   backgroundColor: '#000',
 };
@@ -154,21 +113,45 @@ const globalRowStyle = {
 const globalCellTextStyle = {
   color: '#fff',
 };
+
 export default function CollapsibleTable() {
+  const [sellerinfoData, setSellerinfoData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/api/sellerinfo');
+        const updatedData = response.data.sellerinfoData.map((seller) => ({
+          ...seller,
+          history: [
+            { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
+            { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
+            { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
+          ],
+        }));
+        setSellerinfoData(updatedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures the effect runs once when the component mounts
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
-        <TableRow style={globalRowStyle}>
-  <TableCell />
-  <TableCell align="center" style={globalCellTextStyle}>S.No</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>Sellers</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>Vouchers</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>Rate</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>Start</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>End</TableCell>
-  <TableCell align="center" style={globalCellTextStyle}>Status</TableCell>
-</TableRow>
+          <TableRow style={globalRowStyle}>
+            <TableCell />
+            <TableCell align="center" style={globalCellTextStyle}>S.No</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>Sellers</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>Vouchers</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>Rate</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>Start</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>End</TableCell>
+            <TableCell align="center" style={globalCellTextStyle}>Status</TableCell>
+          </TableRow>
         </TableHead>
         <TableBody>
           {sellerinfoData.map((row, index) => (
