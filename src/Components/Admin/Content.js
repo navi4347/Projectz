@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { VectorMap } from '@south-paw/react-vector-maps';
 import world from './Assets/world.json';
 import { Card } from 'react-bootstrap';
+import SellerIcon from '@mui/icons-material/ViewInAr';
+import ClientsIcon from '@mui/icons-material/Business';
+import EmployeesIcon from '@mui/icons-material/SwitchAccount';
+import VouchersIcon from '@mui/icons-material/CardGiftcard';
 
 const Content = () => {
+  const [data] = useState({
+    sellers: 100,
+    vouchers: 10000,
+    clients: 500,
+    employees: 10000,
+  });
+
   const mapData = {
     ...world,
     style: {
-      fill: 'red',
-      stroke: 'red',
+      fill: '#1976d2',
+      stroke: '#1976d2',
     },
   };
 
@@ -18,34 +29,43 @@ const Content = () => {
     outline: 'none',
   };
 
-  // Array of background-color values for each card
   const cardColors = [
-    'linear-gradient(45deg,#4099ff,#73b4ff)',
-    'linear-gradient(45deg,#2ed8b6,#59e0c5)',
-    'linear-gradient(45deg, rgba(129, 140, 248, 1) 0%, rgba(129, 140, 248, 0) 100%)',
-    'linear-gradient(45deg,#FF5370,#ff869a)',
+    '#007bff',
+    '#ef5350',
+    '#66bb6a',
+    '#8278DA',
   ];
 
-  // Array of information for each card
-  const cardInfo = ['Seller Info', 'Vouchers', 'Clients', 'Employees'];
+  const cardInfo = ['Sellers', 'Vouchers', 'Clients', 'Employees'];
+
+  const cardIcons = [SellerIcon, VouchersIcon, ClientsIcon, EmployeesIcon];
 
   return (
-    <div className="mt-4">
+    <div className="mt-3">
       <Container>
         <Row>
           {[0, 1, 2, 3].map((index) => (
             <Col lg={3} key={index}>
               <Card style={{ background: cardColors[index], color: '#ffffff' }}>
-                <Card.Body>
-                  <p><strong>Important:</strong> {cardInfo[index]}</p>
-                  <p>Example of additional information in a card body.</p>
+                <Card.Body className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center">
+                    <div className="mr-3">
+                      {React.createElement(cardIcons[index], { fontSize: 'large' })}
+                    </div>
+                    <div>
+                      <p>{cardInfo[index]}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="mb-0">{data[cardInfo[index].toLowerCase()]}</h2>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
           ))}
         </Row>
 
-        <div className="mt-4">
+        <div className="mt-3">
           <Row>
             <Col lg={6}>1 of 3</Col>
             <Col lg={6} style={mapContainerStyle}>
