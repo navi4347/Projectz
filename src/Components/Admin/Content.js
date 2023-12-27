@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { VectorMap } from '@south-paw/react-vector-maps';
-import world from './Assets/world.json';
 import { Card } from 'react-bootstrap';
 import SellerIcon from '@mui/icons-material/ViewInAr';
 import ClientsIcon from '@mui/icons-material/Business';
 import EmployeesIcon from '@mui/icons-material/SwitchAccount';
 import VouchersIcon from '@mui/icons-material/CardGiftcard';
+import Orders from './Dashboard/Orders';
+import Profit from './Dashboard/Profit';
 
 const Content = () => {
   const [data] = useState({
@@ -16,18 +16,6 @@ const Content = () => {
     clients: 500,
     employees: 10000,
   });
-
-  const mapData = {
-    ...world,
-    style: {
-      fill: '#1976d2',
-      stroke: '#1976d2',
-    },
-  };
-
-  const mapContainerStyle = {
-    outline: 'none',
-  };
 
   const cardColors = [
     '#007bff',
@@ -41,7 +29,7 @@ const Content = () => {
   const cardIcons = [SellerIcon, VouchersIcon, ClientsIcon, EmployeesIcon];
 
   return (
-    <div className="mt-3">
+    <div className="mt-4">
       <Container>
         <Row>
           {[0, 1, 2, 3].map((index) => (
@@ -67,10 +55,10 @@ const Content = () => {
 
         <div className="mt-3">
           <Row>
-            <Col lg={6}>1 of 3</Col>
-            <Col lg={6} style={mapContainerStyle}>
-              <VectorMap {...mapData} />
-            </Col>
+            <Col lg={7}><Orders /></Col>
+            <Col lg={5} className="d-flex justify-content-center">
+              <Profit />
+              </Col>
           </Row>
         </div>
       </Container>
