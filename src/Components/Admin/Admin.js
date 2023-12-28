@@ -15,7 +15,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-//import Login from './Login'
+import { useNavigate } from 'react-router-dom';
+
 import {
   Box,
   Typography,
@@ -49,7 +50,6 @@ import {
 import './Style.css';
 
 const drawerWidth = 240;
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -148,6 +148,11 @@ export default function Admin() {
   };
 
   
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  navigate('/login');
+}
 
   const handleClientArrowClick = () => {
     setClientDropdownOpen(!clientDropdownOpen);
@@ -295,7 +300,7 @@ export default function Admin() {
                   <ListItem
                     key={text}
                     disablePadding
-                    onClick={() => handleListItemClick(text)}
+                    onClick={text === 'Logout' ? handleLogout : () => handleListItemClick(text)}
                     selected={text === selectedContent}
                     sx={{ marginBottom: 2 }}
                   >

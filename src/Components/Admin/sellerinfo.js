@@ -87,7 +87,7 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    Sno: PropTypes.string.isRequired,
+    Sno: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     TotV: PropTypes.string.isRequired,
     Rate: PropTypes.string.isRequired,
     Start: PropTypes.string.isRequired,

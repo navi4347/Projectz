@@ -29,7 +29,6 @@ export default function StickyHeadTable() {
     // Fetch data from the server when the component mounts
     axios.get('http://127.0.0.1:5000/api/empinfo')
     .then(response => {
-        console.log('Fetched data:', response.data.empinfoData);
         setRows(response.data.empinfoData);
       })
       .catch(error => {

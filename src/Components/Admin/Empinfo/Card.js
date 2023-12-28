@@ -1,69 +1,45 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import imga from './Assets/1.jpg'
-import imgc from './Assets/3.jpg'
 
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import Divider from '@mui/material/Divider';
+import imga from './Assets/3.jpg';
+import imgb from './Assets/2.jpg';
 
-
-export default function AlignItemsList() {
+export default function InsetDividers() {
   return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <ListItem alignItems="flex-start">
+    <List
+      sx={{
+        width: '100%',
+        maxWidth: 360,
+        bgcolor: 'background.paper',
+      }}
+    >
+      <ListItem>
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src={imga} />
+        <Avatar alt="Remy Sharp" src={imga} />
         </ListItemAvatar>
-        <ListItemText
-          primary="K Naveen"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-               IBM
-              </Typography>
-              {" — PR020"}
-              <Typography           
-               color="#000"
-              >Location: Bangalore</Typography>
-             <Typography color="#000" >Wallet: 5 Vouchers</Typography>    
-            </React.Fragment>
-          }
-        />
+        <ListItemText primary="Gayathri" secondary="PR010" />
       </ListItem>
       <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
+      <ListItem>
         <ListItemAvatar>
-          <Avatar alt="Cindy Baker"  src={imgc} />
+        <Avatar alt="Remy Sharp" src={imgb} />
         </ListItemAvatar>
-        <ListItemText
-          primary="A Gayathri"
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-               TCS
-              </Typography>
-              {" — PR010"}
-              <Typography           
-               color="#000"
-              >Location: Bangalore</Typography>
-             <Typography color="#000" >Wallet: 5 Vouchers</Typography>            
-            </React.Fragment>
-          }
-        />
+        <ListItemText primary="Naveen" secondary="PR020" />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <BeachAccessIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Vacation" secondary="July 20, 2014" />
       </ListItem>
     </List>
   );

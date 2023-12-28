@@ -30,6 +30,8 @@ const rows = [
   createData('Amazon', '$50', 'Debit', '20/11/2023', '50', 'Success'),
 ];
 
+const rowsWithKeys = rows.map((row, index) => ({ ...row, key: `${row.Name}-${row.Date}-${index}` }));
+
 export default function StickyHeadTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -52,7 +54,7 @@ export default function StickyHeadTable() {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.id === 'Voucher' ? 'center' : 'left'} // Align center for the 'Voucher' column
+                  align={column.id === 'Voucher' ? 'center' : 'left'}
                   style={{ minWidth: column.minWidth }}
                 >
                   <Typography variant="subtitle1" fontWeight="bold">
@@ -63,40 +65,37 @@ export default function StickyHeadTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-  {rows
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map((row) => {
-      return (
-        <TableRow hover role="checkbox" tabIndex={-1} key={row.Price}>
-          {columns.map((column) => {
-            const value = row[column.id];
-            const cellProps = {
-              key: column.id,
-              align: column.id === 'Voucher' ? 'center' : 'left',
-              style: {},
-            };
+            {rowsWithKeys
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.key}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    const cellProps = {
+                      key: column.id,
+                      align: column.id === 'Voucher' ? 'center' : 'left',
+                      style: {},
+                    };
 
-            if (column.id === 'Status') {
-              // Set background color based on 'Status' value
-              if (value === 'Success') {
-                cellProps.style.color = 'green'; // Optional: Set text color for better visibility
-              } else if (value === 'Delivered') {
-                cellProps.style.color = 'blue'; // Optional: Set text color for better visibility
-              }
-            }
+                    if (column.id === 'Status') {
+                      if (value === 'Success') {
+                        cellProps.style.color = 'green';
+                      } else if (value === 'Delivered') {
+                        cellProps.style.color = 'blue';
+                      }
+                    }
 
-            return (
-              <TableCell {...cellProps}>
-                {column.format && typeof value === 'number'
-                  ? column.format(value)
-                  : value}
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      );
-    })}
-</TableBody>
+                    return (
+                      <TableCell {...cellProps}>
+                        {column.format && typeof value === 'number'
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+          </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
