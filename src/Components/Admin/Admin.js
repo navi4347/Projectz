@@ -16,7 +16,6 @@ import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router-dom';
-
 import {
   Box,
   Typography,
@@ -225,7 +224,7 @@ const handleLogout = () => {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase name='Search' id='Search' placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

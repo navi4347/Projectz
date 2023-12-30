@@ -78,6 +78,7 @@ export default function ListDividers() {
         <Select
           labelId="time-range-label"
           id="time-range-select"
+          name="time-range-select"
           value={timeRange}
           label="Time Range"
           onChange={handleTimeRangeChange}

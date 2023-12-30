@@ -22,7 +22,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('http://192.168.0.104:5000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,6 +60,7 @@ function Login() {
               label='Username'
               type='text'
               id='username'
+              name='username'
               className='kgf'
               value={username}
               autoComplete='off'
@@ -71,6 +72,7 @@ function Login() {
             <TextField
               label='Password'
               type='password'
+              name='password'
               id='password'
               className='kgf'
               value={password}
@@ -84,6 +86,8 @@ function Login() {
               <Select
                 value={userType}
                 className='gh'
+                name='options'
+                id='options'
                 onChange={(e) => setUserType(e.target.value)}
                 required
               >
