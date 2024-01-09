@@ -61,6 +61,7 @@ function Login() {
               type='text'
               id='username'
               name='username'
+              variant="standard"
               className='kgf'
               value={username}
               autoComplete='off'
@@ -71,6 +72,7 @@ function Login() {
           <div>
             <TextField
               label='Password'
+              variant="standard"
               type='password'
               name='password'
               id='password'
@@ -88,6 +90,7 @@ function Login() {
                 className='gh'
                 name='options'
                 id='options'
+                variant="standard"
                 onChange={(e) => setUserType(e.target.value)}
                 required
               >
@@ -97,6 +100,7 @@ function Login() {
               </Select>
             </FormControl>
           </div>
+          
           <Button className='kgf' variant='contained' color='primary' type='submit'>
             Login
           </Button>

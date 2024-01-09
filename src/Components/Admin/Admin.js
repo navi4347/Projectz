@@ -309,6 +309,7 @@ const handleLogout = () => {
                         {text === 'Empinfo' && <SwitchAccountIcon sx={{ color: 'white' }} />}
                         {text === 'Logout' && <LogoutIcon sx={{ color: 'white' }} />}
                         {text === 'Sellerinfo' && <ViewInArIcon sx={{ color: 'white' }} />}
+                       
 
                       </ListItemIcon>
                       <ListItemText primary={text} />

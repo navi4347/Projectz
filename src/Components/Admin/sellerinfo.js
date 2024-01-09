@@ -124,9 +124,9 @@ export default function CollapsibleTable() {
         const updatedData = response.data.sellerinfoData.map((seller) => ({
           ...seller,
           history: [
-            { id: 1, type: "Silver", vouchers: 15, value: 500, amount: 7500 },
-            { id: 2, type: "Gold", vouchers: 5, value: 1000, amount: 5000 },
-            { id: 3, type: "Platinum", vouchers: 5, value: 2000, amount: 10000 },
+            { id: 1, type: "Silver", vouchers: 20, value: 500, amount: 10000 },
+            { id: 2, type: "Gold", vouchers: 13, value: 1000, amount: 13000 },
+            { id: 3, type: "Platinum", vouchers: 12, value: 2000, amount: 24000 },
           ],
         }));
         setSellerinfoData(updatedData);
